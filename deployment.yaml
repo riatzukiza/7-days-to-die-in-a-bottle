@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 7dtd-server
+  name: game-7dtd-server
   annotations:
     kubesailEditorUid: c835dc72-c037-4d2d-ae62-7c0cd6f47b9e
 spec:
@@ -13,37 +13,35 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: 7dtd
+      app: game-7dtd
   template:
     metadata:
       labels:
-        app: 7dtd
+        app: game-7dtd
     spec:
       volumes:
         - name: world
           persistentVolumeClaim:
-            claimName: 7dtd-world
+            claimName: game-7dtd-world
 
         - name: serverfiles
           persistentVolumeClaim:
-            claimName: 7dtd-serverfile
+            claimName: game-7dtd-serverfiles
 
         - name: logs
           persistentVolumeClaim:
-            claimName: 7dtd-logs
+            claimName: game-7dtd-logs
 
         - name: backups
           persistentVolumeClaim:
-            claimName: 7dtd-backups
-
+            claimName: game-7dtd-backups
         - name: alerts
           persistentVolumeClaim:
-            claimName: 7dtd-alerts
+            claimName: game-7dtd-alerts
       containers:
-        - name: 7dtd
+        - name: game-7dtd
           image: vinanrra/7dtd-server
           imagePullPolicy: Always
-          env:
           volumeMounts:
             - name: world
               mountPath: /home/sdtserver/.local/share/7DaysToDie/
@@ -51,35 +49,27 @@ spec:
             - containerPort: 26900
               name: tcp-game
               hostPort: 26900
-              type: tcp
-            - containerPort: 26900
-              name: udp-game-1
-              hostPort: 26900
-              type: udp
             - containerPort: 26901
               name: udp-game-2
               hostPort: 26901
-              type: udp
+              protocol: UDP
             - containerPort: 26902
               name: udp-game-3
               hostPort: 26902
-              type: udp
+              protocol: UDP
             - containerPort: 8080
               name: webadmin
               hostPort: 8080
-              type: tcp #OPTIONAL WEBADMIN
             - containerPort: 8081
               name: telnet
               hostPort: 8081
-              type: tcp #OPTIONAL TELNET
             - containerPort: 8082
               name: webserver
               hostPort: 8082
-              type: tcp #OPTIONAL WEBSERVER https://7dtd.illy.bz/wiki/Server%20fixes
           resources:
             requests:
-              cpu: 1
-              memory: 1Gi
-            limits:
               cpu: 2
-              memory: 8Gi
+              memory: 4Gi
+            limits:
+              cpu: 4
+              memory: 16Gi
