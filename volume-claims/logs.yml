@@ -3,12 +3,12 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: 7dtd-logs
+  name: game-7dtd-logs
   labels:
-    app: 7dtd
+    app: game-7dtd
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 2Gi
+      storage: 16Gi
