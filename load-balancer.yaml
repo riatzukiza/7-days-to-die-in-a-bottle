@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: game-7dtd-server
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
     - port: 26900
       targetPort: 26900
